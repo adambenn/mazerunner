@@ -16,6 +16,9 @@ class DFSGenerator(Generator):
         startCell = maze.getCell(start)
         endCell = maze.getCell(end)
 
+        maze.entrance = startCell
+        maze.exit = endCell
+
         startCell.removeWall(2)
         endCell.removeWall(3)
 

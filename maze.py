@@ -55,6 +55,10 @@ class Cell:
         self.removeWall(self.directionOfCell(cell))
         cell.removeWall(cell.directionOfCell(self))
 
+    def hasWallBetween(self, cell):
+        assert self.isAdjacent(cell), "Can't check for walls between {} and non adjacent cell {}".format(self, cell)
+        return self.hasWall(self.directionOfCell(cell)) or cell.hasWall(cell.directionOfCell(self))
+
     def __repr__(self):
         walls = ["Top", "Bottom", "Left", "Right"]
         walls = [walls[i] for i in range(len(walls)) if self.walls[i]]
@@ -88,6 +92,9 @@ class Maze:
         self.size = size
         self.cells = []
 
+        self.entrance = None
+        self.exit = None
+
         for y in range(self.size):
             self.cells.append([])
             for x in range(self.size):
@@ -106,6 +113,9 @@ class Maze:
 
     def generate(self, generator):
         generator.run(self)
+
+    def solve(self, solver):
+        return solver.solve(self)
 
     def getCell(self, coordinate):
         self.__validateCoordinate(coordinate)
@@ -133,5 +143,4 @@ class Maze:
                 out += self.cells[y][x].graphicalRepresentation()
             out += "\n"
         return out
-
 
