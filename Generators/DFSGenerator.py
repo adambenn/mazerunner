@@ -13,15 +13,9 @@ class DFSGenerator(Generator):
         visited = {}
 
         # Make the initial cell the current cell and mark it as visited
+        self.setEntranceExit(maze, start, end)
+
         startCell = maze.getCell(start)
-        endCell = maze.getCell(end)
-
-        maze.entrance = startCell
-        maze.exit = endCell
-
-        startCell.removeWall(2)
-        endCell.removeWall(3)
-
         visited[start] = True
         stack.append(startCell)
 
@@ -44,12 +38,4 @@ class DFSGenerator(Generator):
                     print("Current maze:")
                     print(maze.graphicalRepresentation())
 
-        if maze.size >= 3:
-            delete_count = (maze.size**2) // 2
-            non_outside = [x[1:-1] for x in maze.cells[1:-1]]
-            for i in range(delete_count):
-                r = random.choice(non_outside)
-                cell = random.choice(r)
-                current_wall_dirs = [i for i in range(4) if cell.walls[i]]
-                if current_wall_dirs:
-                    cell.removeWall(random.choice(current_wall_dirs))
+        self.deleteRandomWalls(maze)
