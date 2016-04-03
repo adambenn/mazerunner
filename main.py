@@ -3,6 +3,7 @@ from Generators.KruskalsGenerator import *
 from Solvers.DFSSolver import *
 from Solvers.UniformCostSolver import *
 from Solvers.AStarSolver import *
+from Solvers.GreedyBFSSolver import *
 import graphics
 from maze import *
 from Solvers.heuristics import *
@@ -20,5 +21,7 @@ if __name__ == "__main__":
     #path = maze.solve(UniformCostSolver())
     path = maze.solve(AStarSolver(heur_straight_line))
     #path = maze.solve(DFSSolver())
+    #path = maze.solve(GreedyBFSSolver(heur_straight_line))
+
     g = graphics.MazeGraphics(maze)
     g.run(path)

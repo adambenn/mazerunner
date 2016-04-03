@@ -15,6 +15,9 @@ class AStarSolver(Solver):
         super().__init__(debug)
         self.heuristic = heuristic
 
+    def cost(self, dist, maze, cell):
+        return dist + 1 + self.heuristic(maze, cell)
+
     def solve(self, maze):
         if (not maze.exit) or (not maze.entrance):
             print("Maze exit or entrance missing")
@@ -43,7 +46,7 @@ class AStarSolver(Solver):
 
             if neighbours:
                 for n in neighbours:
-                    heapq.heappush(h, CostCellWrapper(n, dist + 1 + self.heuristic(maze, n), cost_cell))
+                    heapq.heappush(h, CostCellWrapper(n, self.cost(dist, maze, n), cost_cell))
 
         print("No path found between {} and {}".format(maze.entrance, maze.exit))
         return []
