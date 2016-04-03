@@ -43,3 +43,13 @@ class DFSGenerator(Generator):
                     print("Removed walls between {} and {}".format(current, nextCell))
                     print("Current maze:")
                     print(maze.graphicalRepresentation())
+
+        if maze.size >= 3:
+            delete_count = (maze.size**2) // 2
+            non_outside = [x[1:-1] for x in maze.cells[1:-1]]
+            for i in range(delete_count):
+                r = random.choice(non_outside)
+                cell = random.choice(r)
+                current_wall_dirs = [i for i in range(4) if cell.walls[i]]
+                if current_wall_dirs:
+                    cell.removeWall(random.choice(current_wall_dirs))
