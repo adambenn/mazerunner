@@ -7,8 +7,6 @@ class Cell:
     def __init__(self, coordinate):
         self.walls = [1] * 4
         self.coordinate = coordinate
-        # used for some generating algorithms
-        self.visited = False
 
     def __validateDirection(self, direction):
         assert direction in range(0, 4), "{} is not a valid direction for a wall".format(direction)
