@@ -1,6 +1,5 @@
+from Generators.DFSGenerator import *
 from maze import *
-from generator import *
-import random
 
 if __name__ == "__main__":
     #random.seed(12345)

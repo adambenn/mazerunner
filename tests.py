@@ -1,6 +1,7 @@
 import unittest
+
 from maze import *
-from generator import *
+
 
 class CellTesting(unittest.TestCase):
     def setUp(self):

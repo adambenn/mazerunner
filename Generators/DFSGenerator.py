@@ -1,12 +1,6 @@
 import random
 from collections import deque
-
-class Generator:
-    def __init__(self, debug = False):
-        self.debug = debug
-
-    def run(self, maze):
-        pass
+from Generators.generator import *
 
 class DFSGenerator(Generator):
     def run(self, maze):
