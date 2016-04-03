@@ -1,17 +1,17 @@
 from Generators.DFSGenerator import *
 from Solvers.DFSSolver import *
+import graphics
 from maze import *
 
 if __name__ == "__main__":
     #random.seed(12345)
-    maze = Maze(5)
+    maze = Maze(15)
     print("Testing DFS generation")
 
     # maze.generate(DFSGenerator(debug = True))
     maze.generate(DFSGenerator())
-    print(maze.graphicalRepresentation())
+    #print(maze.graphicalRepresentation())
 
     path = maze.solve(DFSSolver())
-    print("Solution path:")
-    for p in path:
-        print(p)
+    g = graphics.MazeGraphics(maze)
+    g.run(path)
