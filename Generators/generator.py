@@ -26,3 +26,8 @@ class Generator:
             current_wall_dirs = [i for i in range(4) if cell.walls[i]]
             if current_wall_dirs:
                 cell.removeWall(random.choice(current_wall_dirs))
+
+    def getEntranceExitCoords(self, maze):
+        start = (0, random.randint(0, maze.size - 1))
+        end = (maze.size - 1, random.randint(0, maze.size - 1))
+        return start, end

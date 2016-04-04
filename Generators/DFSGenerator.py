@@ -7,8 +7,7 @@ class DFSGenerator(Generator):
         return stack.pop()
 
     def run(self, maze):
-        start = (0, random.randint(0, maze.size - 1))
-        end = (maze.size - 1, random.randint(0, maze.size - 1))
+        start, end = self.getEntranceExitCoords(maze)
 
         if self.debug:
             print("Starting DFS generation between cells {} and {}".format(start, end))

@@ -4,8 +4,7 @@ from Generators.generator import *
 
 class KruskalsGenerator(Generator):
     def run(self, maze):
-        start = (0, random.randint(0, maze.size - 1))
-        end = (maze.size - 1, random.randint(0, maze.size - 1))
+        start, end = self.getEntranceExitCoords(maze)
 
         self.setEntranceExit(maze, start, end)
 
