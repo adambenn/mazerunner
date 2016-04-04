@@ -36,7 +36,7 @@ class MazeGraphics:
                 c = (c[0] + self.CELL_SIZE // 2, c[1] + self.CELL_SIZE // 2)
                 canvas.create_line(c[0] - self.CELL_SIZE, c[1], c[0], c[1], fill = "red")
 
-            if ind + 1 == len(path) - 1:
+            if cell == self.maze.exit:
                 canvas.create_line(c[0], c[1], c[0] + self.CELL_SIZE, c[1], fill = "red")
 
     def __drawMaze(self, canvas, path):
@@ -44,10 +44,15 @@ class MazeGraphics:
             for x in range(self.maze.size):
                 self.__drawCell(canvas, self.maze.cells[y][x], path)
 
-    def run(self, path = []):
-        top = tkinter.Tk()
-        canvas = tkinter.Canvas(top, height = self.HEIGHT, width = self.WIDTH)
-        canvas.pack()
+    def updatePath(self, path):
+        self.canvas.create_rectangle(0, 0, self.WIDTH, self.HEIGHT, fill = "white")
+        self.__drawMaze(self.canvas, path)
+        self.top.update()
 
-        self.__drawMaze(canvas, path)
-        top.mainloop()
+    def run(self, path = []):
+        self.top = tkinter.Tk()
+        self.canvas = tkinter.Canvas(self.top, height = self.HEIGHT, width = self.WIDTH)
+        self.canvas.pack()
+
+        self.__drawMaze(self.canvas, path)
+        self.top.update()

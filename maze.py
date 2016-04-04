@@ -136,6 +136,32 @@ class Maze:
 
         return neighbours
 
+    def getNeighbourInDirection(self, coordinate, direction):
+        self.__validateCoordinate(coordinate)
+        cell = self.getCell(coordinate)
+        assert direction in range(4)
+
+        if direction == 0:
+            if coordinate[1] > 0:
+                return self.getCell((coordinate[0], coordinate[1] - 1))
+            else:
+                raise Exception("Invalid direction {} for cell {}".format(direction, cell))
+        elif direction == 1:
+            if coordinate[1] < self.size - 1:
+                return self.getCell((coordinate[0], coordinate[1] + 1))
+            else:
+                raise Exception("Invalid direction {} for cell {}".format(direction, cell))
+        elif direction == 2:
+            if coordinate[0] > 0:
+                return self.getCell((coordinate[0] - 1, coordinate[1]))
+            else:
+                raise Exception("Invalid direction {} for cell {}".format(direction, cell))
+        elif direction == 3:
+            if coordinate[0] < self.size - 1:
+                return self.getCell((coordinate[0] + 1, coordinate[1]))
+            else:
+                raise Exception("Invalid direction {} for cell {}".format(direction, cell))
+
     def graphicalRepresentation(self):
         out = ""
         for y in range(self.size):

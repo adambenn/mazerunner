@@ -4,4 +4,4 @@ from Solvers.heuristics import heur_uniform_cost
 
 class UniformCostSolver(Solver):
     def solve(self, maze):
-        return AStarSolver(heur_uniform_cost).solve(maze)
+        return AStarSolver(heur_uniform_cost, self.debug, self.graphics).solve(maze)

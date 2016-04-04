@@ -4,6 +4,10 @@ from collections import deque
 
 class IDAStarSolver(HeuristicSolver):
     def solve(self, maze):
+        if self.graphics:
+            g = self.graphics(maze)
+            g.run([])
+
         min_cost = 1
         while True:
             visited = {}
@@ -12,16 +16,16 @@ class IDAStarSolver(HeuristicSolver):
             stack = deque()
             path = []
 
-            stack.append(CostCellWrapper(start, 0))
+            stack.append(CostCellWrapper(start, 0, 0))
 
             min_cost = float("inf")
             while stack:
                 cost_cell = stack.pop()
-                dist = cost_cell.cost
+                dist = cost_cell.dist
+                cost = cost_cell.cost
                 current = cost_cell.cell
                 visited[current.coordinate] = True
 
-                cost = self.cost(dist, maze, current)
                 if cost > bound:
                     if cost < min_cost:
                         min_cost = cost
@@ -38,9 +42,13 @@ class IDAStarSolver(HeuristicSolver):
                 neighbours = [x for x in neighbours if not x.coordinate in visited and not current.hasWallBetween(x)]
 
                 if neighbours:
+                    if self.graphics:
+                        g.updatePath(path)
+                        #time.sleep(self.UPDATE_DELAY)
+
                     cheapest = min(neighbours, key = lambda x: self.cost(dist, maze, x))
                     stack.append(cost_cell)
-                    stack.append(CostCellWrapper(cheapest, self.cost(dist, maze, cheapest)))
+                    stack.append(CostCellWrapper(cheapest, self.cost(dist, maze, cheapest), dist + 1))
                 else:
                     path.pop()
 

@@ -18,16 +18,18 @@ if __name__ == "__main__":
     '''
     Configure everything here
     '''
-    random.seed(1456345)
-    maze = Maze(100)
+    random.seed(14345)
+    maze = Maze(10)
     debug = False
-    showGraphics = False
+    showGraphics = True
+    generator_simulator = None#graphics.MazeGraphics
+    solver_simulator = None#graphics.MazeGraphics
     heuristic = heur_straight_line
 
     # 0: BFS, 1: DFS, 2: Kruskal's, 3: Prim's
-    Generator = 0
+    Generator = 1
     # 0: BFS, 1: DFS, 2: UniformCost, 3: GreedyBFS, 4: A*, 5: IDA*
-    Solver = 0
+    Solver = 5
 
     print("----------------------------")
 
@@ -47,7 +49,7 @@ if __name__ == "__main__":
     print('Using {} to Generate the Maze'.format(genName))
 
     init_time = os.times()[0]
-    maze.generate(Generator(debug))
+    maze.generate(Generator(debug, generator_simulator))
     gen_time = os.times()[0] - init_time
 
     print('Generator time: {}'.format(gen_time))
@@ -76,11 +78,11 @@ if __name__ == "__main__":
 
     if Solver > 2:
         init_time = os.times()[0]
-        path = maze.solve(SolverAlg(heuristic))
+        path = maze.solve(SolverAlg(heuristic, graphics = solver_simulator))
         search_time = os.times()[0] - init_time
     else:
         init_time = os.times()[0]
-        path = maze.solve(SolverAlg())
+        path = maze.solve(SolverAlg(graphics = solver_simulator))
         search_time = os.times()[0] - init_time
 
     print('Search time: {}'.format(search_time))
@@ -90,3 +92,4 @@ if __name__ == "__main__":
     if showGraphics:
         g = graphics.MazeGraphics(maze)
         g.run(path)
+        g.top.mainloop()

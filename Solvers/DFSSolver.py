@@ -1,11 +1,15 @@
 from collections import deque
 from Solvers.solver import *
+import time
 
 class DFSSolver(Solver):
     def solve(self, maze):
         if (not maze.exit) or (not maze.entrance):
             print("Maze exit or entrance missing")
             return []
+        if self.graphics:
+            g = self.graphics(maze)
+            g.run([])
 
         stack = deque()
         stack.append(maze.entrance)
@@ -21,6 +25,10 @@ class DFSSolver(Solver):
                 # branched off down that path will still be on the path. so this
                 # prevents duplicates
                 path.append(current)
+
+            if self.graphics:
+                g.updatePath(path)
+                #time.sleep(self.UPDATE_DELAY)
 
             if self.isGoal(maze, current):
                 return path

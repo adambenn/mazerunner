@@ -11,6 +11,11 @@ class KruskalsGenerator(Generator):
         if self.debug:
             print("Starting Kruskal generation between cells {} and {}".format(start, end))
 
+        g = None
+        if self.graphics:
+            g = self.graphics(maze)
+            g.run([])
+
         walls, sets = [], []
 
         for y in range(len(maze.cells)):
@@ -40,9 +45,12 @@ class KruskalsGenerator(Generator):
             walls.remove((cell, neighbour))
             walls.remove((neighbour, cell))
 
+            if self.graphics:
+                g.updatePath([])
+
             if self.debug:
                 print("Removed walls between {} and {}".format(cell, neighbour))
                 print("Current maze:")
                 print(maze.graphicalRepresentation())
 
-        self.deleteRandomWalls(maze)
+        self.deleteRandomWalls(maze, g)

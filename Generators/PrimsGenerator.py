@@ -11,10 +11,15 @@ class PrimsGenerator(Generator):
         if self.debug:
             print("Starting Prim's generation between cells {} and {}".format(start, end))
 
-        walls, visited = [], []
+        g = None
+        if self.graphics:
+            g = self.graphics(maze)
+            g.run([])
+
+        walls, visited = [], {}
 
         cell = maze.getCell(start)
-        visited.append(cell)
+        visited[cell.coordinate] = True
 
         for neighbour in maze.getNeighbours(start):
             walls.append((cell, neighbour))
@@ -23,9 +28,11 @@ class PrimsGenerator(Generator):
             wall_index = random.randint(0, len(walls)-1)
             (cell, neighbour) = walls[wall_index]
 
-            if neighbour not in visited:
+            if neighbour.coordinate not in visited:
                 cell.removeWallsBetweenCell(neighbour)
-                visited.append(neighbour)
+                visited[neighbour.coordinate] = True
+                if g:
+                    g.updatePath([])
 
                 for n in maze.getNeighbours(neighbour.coordinate):
                     walls.append((neighbour, n))
@@ -37,4 +44,4 @@ class PrimsGenerator(Generator):
                 print("Current maze:")
                 print(maze.graphicalRepresentation())
 
-        self.deleteRandomWalls(maze)
+        self.deleteRandomWalls(maze, g)

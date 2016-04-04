@@ -1,6 +1,8 @@
 class Solver:
-    def __init__(self, debug = False):
+    UPDATE_DELAY = 0
+    def __init__(self, debug = False, graphics = None):
         self.debug = debug
+        self.graphics = graphics
 
     def isGoal(self, maze, cell):
         return maze.exit is cell
@@ -9,8 +11,8 @@ class Solver:
         return []
 
 class HeuristicSolver(Solver):
-    def __init__(self, heuristic, debug = False):
-        super().__init__(debug)
+    def __init__(self, heuristic, debug = False, graphics = None):
+        super().__init__(debug, graphics)
         self.heuristic = heuristic
 
     def cost(self, dist, maze, cell):

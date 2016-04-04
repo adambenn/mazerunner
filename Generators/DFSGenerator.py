@@ -14,6 +14,11 @@ class DFSGenerator(Generator):
         stack = deque()
         visited = {}
 
+        g = None
+        if self.graphics:
+            g = self.graphics(maze)
+            g.run([])
+
         # Make the initial cell the current cell and mark it as visited
         self.setEntranceExit(maze, start, end)
 
@@ -40,4 +45,7 @@ class DFSGenerator(Generator):
                     print("Current maze:")
                     print(maze.graphicalRepresentation())
 
-        self.deleteRandomWalls(maze)
+                if self.graphics:
+                    g.updatePath([])
+
+        self.deleteRandomWalls(maze, g)
