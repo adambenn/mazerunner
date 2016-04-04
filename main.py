@@ -8,26 +8,81 @@ from Solvers.AStarSolver import *
 from Solvers.GreedyBFSSolver import *
 from Solvers.BFSSolver import *
 import graphics
+import os
 from maze import *
 from Solvers.heuristics import *
 
 if __name__ == "__main__":
+
+    '''
+    Configure everything here
+    '''
     random.seed(1456345)
-    maze = Maze(15)
-    print("Testing DFS generation")
+    maze = Maze(100)
+    debug = False
+    showGraphics = False
+    heuristic = heur_straight_line
 
-    # maze.generate(DFSGenerator(debug = True))
-    # maze.generate(DFSGenerator())
-    # maze.generate(KruskalsGenerator())
-    maze.generate(PrimsGenerator())
-    # maze.generate(BFSGenerator())
-    #print(maze.graphicalRepresentation())
+    # 0: BFS, 1: DFS, 2: Kruskal's, 3: Prim's
+    Generator = 0
+    # 0: BFS, 1: DFS, 2: UniformCost, 3: GreedyBFS, 4: A*
+    Solver = 0
 
-    #path = maze.solve(UniformCostSolver())
-    path = maze.solve(AStarSolver(heur_straight_line))
-    #path = maze.solve(DFSSolver())
-    #path = maze.solve(GreedyBFSSolver(heur_straight_line))
-    #path = maze.solve(BFSSolver())
+    print("----------------------------")
 
-    g = graphics.MazeGraphics(maze)
-    g.run(path)
+    if Generator == 0:
+        Generator = BFSGenerator
+        genName = 'Breadth-First Search'
+    elif Generator == 1:
+        Generator = DFSGenerator
+        genName = 'Depth-First Search'
+    elif Generator == 2:
+        Generator = KruskalsGenerator
+        genName = "Kruskal's Algorithm"
+    elif Generator == 3:
+        Generator = PrimsGenerator
+        genName = "Prim's Algorithm"
+
+    print('Using {} to Generate the Maze'.format(genName))
+
+    init_time = os.times()[0]
+    maze.generate(Generator(debug))
+    gen_time = os.times()[0] - init_time
+
+    print('Generator time: {}'.format(gen_time))
+    print("----------------------------")
+
+    if Solver == 0:
+        SolverAlg = BFSSolver
+        strategy = 'Breadth-First Search'
+    elif Solver == 1:
+        SolverAlg = DFSSolver
+        strategy = 'Depth-First Search'
+    elif Solver == 2:
+        SolverAlg = UniformCostSolver
+        strategy = 'Uniform-Cost Search'
+    elif Solver == 3:
+        SolverAlg = GreedyBFSSolver
+        strategy = 'Greedy Best-First Search'
+    elif Solver == 4:
+        SolverAlg = AStarSolver
+        strategy = 'A* Search'
+
+    print('Search Strategy: {}'.format(strategy))
+
+    if Solver > 2:
+        init_time = os.times()[0]
+        path = maze.solve(SolverAlg(heuristic))
+        search_time = os.times()[0] - init_time
+    else:
+        init_time = os.times()[0]
+        path = maze.solve(SolverAlg())
+        search_time = os.times()[0] - init_time
+
+    print('Search time: {}'.format(search_time))
+    print('Solution cost: {}'.format(len(path)))
+    print("----------------------------")
+
+    if showGraphics:
+        g = graphics.MazeGraphics(maze)
+        g.run(path)
