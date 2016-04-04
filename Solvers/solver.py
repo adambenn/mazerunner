@@ -7,3 +7,11 @@ class Solver:
 
     def solve(self, maze):
         return []
+
+class HeuristicSolver(Solver):
+    def __init__(self, heuristic, debug = False):
+        super().__init__(debug)
+        self.heuristic = heuristic
+
+    def cost(self, dist, maze, cell):
+        return dist + 1 + self.heuristic(maze, cell)

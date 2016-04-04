@@ -10,14 +10,7 @@ class CostCellWrapper:
     def __lt__(self, other):
         return self.cost < other.cost
 
-class AStarSolver(Solver):
-    def __init__(self, heuristic, debug = False):
-        super().__init__(debug)
-        self.heuristic = heuristic
-
-    def cost(self, dist, maze, cell):
-        return dist + 1 + self.heuristic(maze, cell)
-
+class AStarSolver(HeuristicSolver):
     def solve(self, maze):
         if (not maze.exit) or (not maze.entrance):
             print("Maze exit or entrance missing")

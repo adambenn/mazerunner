@@ -7,6 +7,7 @@ from Solvers.UniformCostSolver import *
 from Solvers.AStarSolver import *
 from Solvers.GreedyBFSSolver import *
 from Solvers.BFSSolver import *
+from Solvers.IDAStarSolver import *
 import graphics
 import os
 from maze import *
@@ -25,7 +26,7 @@ if __name__ == "__main__":
 
     # 0: BFS, 1: DFS, 2: Kruskal's, 3: Prim's
     Generator = 0
-    # 0: BFS, 1: DFS, 2: UniformCost, 3: GreedyBFS, 4: A*
+    # 0: BFS, 1: DFS, 2: UniformCost, 3: GreedyBFS, 4: A*, 5: IDA*
     Solver = 0
 
     print("----------------------------")
@@ -67,6 +68,9 @@ if __name__ == "__main__":
     elif Solver == 4:
         SolverAlg = AStarSolver
         strategy = 'A* Search'
+    elif Solver == 5:
+        SolverAlg = IDAStarSolver
+        strategy = "IDA* Search"
 
     print('Search Strategy: {}'.format(strategy))
 
