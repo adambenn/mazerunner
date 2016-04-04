@@ -1,5 +1,6 @@
 from Generators.DFSGenerator import *
 from Generators.KruskalsGenerator import *
+from Generators.BFSGenerator import *
 from Solvers.DFSSolver import *
 from Solvers.UniformCostSolver import *
 from Solvers.AStarSolver import *
@@ -17,6 +18,7 @@ if __name__ == "__main__":
     # maze.generate(DFSGenerator(debug = True))
     # maze.generate(DFSGenerator())
     maze.generate(KruskalsGenerator())
+    # maze.generate(BFSGenerator())
     #print(maze.graphicalRepresentation())
 
     #path = maze.solve(UniformCostSolver())
