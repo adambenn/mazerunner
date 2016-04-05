@@ -45,7 +45,7 @@ class MazeGraphics:
                 self.__drawCell(canvas, self.maze.cells[y][x], path)
 
     def updatePath(self, path):
-        self.canvas.create_rectangle(0, 0, self.WIDTH, self.HEIGHT, fill = "white")
+        self.canvas.delete("all")
         self.__drawMaze(self.canvas, path)
         self.top.update()
 

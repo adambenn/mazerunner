@@ -19,20 +19,20 @@ if __name__ == "__main__":
     Configure everything here
     '''
     random.seed(14345)
-    maze = Maze(100)
+    maze = Maze(15)
     debug = False
     showGraphics = True
-    simulate_generation = False
-    simulate_solver = False
+    simulate_generation = True
+    simulate_solver = True
     heuristic = heur_manhattan
 
     generator_simulator = graphics.MazeGraphics if simulate_generation else None
     solver_simulator = graphics.MazeGraphics if simulate_solver else None
 
     # 0: BFS, 1: DFS, 2: Kruskal's, 3: Prim's
-    Generator = 1
+    Generator = 2
     # 0: BFS, 1: DFS, 2: UniformCost, 3: GreedyBFS, 4: A*, 5: IDA*
-    Solver = 4
+    Solver = 5
 
     print("----------------------------")
 
