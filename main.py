@@ -22,8 +22,8 @@ if __name__ == "__main__":
     maze = Maze(15)
     debug = False
     showGraphics = True
-    simulate_generation = True
-    simulate_solver = True
+    simulate_generation = False
+    simulate_solver = False
     heuristic = heur_manhattan
 
     generator_simulator = graphics.MazeGraphics if simulate_generation else None
@@ -32,7 +32,7 @@ if __name__ == "__main__":
     # 0: BFS, 1: DFS, 2: Kruskal's, 3: Prim's
     Generator = 2
     # 0: BFS, 1: DFS, 2: UniformCost, 3: GreedyBFS, 4: A*, 5: IDA*
-    Solver = 5
+    Solver = 4
 
     print("----------------------------")
 

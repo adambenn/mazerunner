@@ -16,19 +16,20 @@ class KruskalsGenerator(Generator):
             g = self.graphics(maze)
             g.run([])
 
-        walls, sets = [], []
+        walls, sets = {}, []
 
         for y in range(len(maze.cells)):
             row = maze.cells[y]
             for x in range(len(row)):
                 cell = row[x]
                 sets.append({cell})
+                walls[cell] = []
                 for neighbour in maze.getNeighbours((x,y)):
-                    walls.append((cell, neighbour))
+                    walls[cell].append(neighbour)
 
         while len(sets) != 1:
-            wall_index = random.randint(0, len(walls)-1)
-            (cell, neighbour) = walls[wall_index]
+            cell = random.choice(list(walls.keys()))
+            neighbour = random.choice(walls[cell])
 
             set1 = [s for s in sets if cell in s][0]
             set2 = [s for s in sets if neighbour in s][0]
@@ -42,8 +43,13 @@ class KruskalsGenerator(Generator):
                 sets.remove(set2)
                 sets.append(new_set)
 
-            walls.remove((cell, neighbour))
-            walls.remove((neighbour, cell))
+            walls[cell].remove(neighbour)
+            walls[neighbour].remove(cell)
+
+            if walls[cell] == []:
+                del walls[cell]
+            if walls[neighbour] == []:
+                del walls[neighbour]
 
             if self.graphics:
                 g.updatePath([])
