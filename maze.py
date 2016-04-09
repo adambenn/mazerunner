@@ -88,9 +88,10 @@ class Cell:
         return out
 
 class Maze:
-    def __init__(self, size):
+    def __init__(self, size, safe = True):
         self.size = size
         self.cells = []
+        self.safe = safe
 
         self.entrance = None
         self.exit = None
@@ -101,6 +102,8 @@ class Maze:
                 self.cells[y].append(Cell((x, y)))
 
     def __validateCoordinate(self, coordinate):
+        if not self.safe:
+            return True
         # verify it is a size two tuple of ints
         assert isinstance(coordinate, tuple) and len(coordinate) == 2 and \
                reduce(lambda x,y: x and y, [isinstance(x, int) for x in coordinate]), \

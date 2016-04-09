@@ -16,4 +16,4 @@ class HeuristicSolver(Solver):
         self.heuristic = heuristic
 
     def cost(self, dist, maze, cell):
-        return dist + 1 + self.heuristic(maze, cell)
+        return float(dist) + 1.0 + self.heuristic(maze, cell)
