@@ -65,7 +65,7 @@ if __name__ == "__main__":
 
         init_time = os.times()[0]
         maze.generate(Generator(debug, generator_simulator))
-        timetime = os.times()[0] - init_time
+        time = os.times()[0] - init_time
 
         print('Generator time: {}'.format(time))
         print("----------------------------")
