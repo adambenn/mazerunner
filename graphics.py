@@ -3,8 +3,6 @@ import tkinter
 class MazeGraphics:
     CELL_SIZE = 15
     OFFSET = 50
-    WIDTH = 480
-    HEIGHT = 320
     def __init__(self, maze):
         self.maze = maze
 
@@ -51,7 +49,7 @@ class MazeGraphics:
 
     def run(self, path = []):
         self.top = tkinter.Tk()
-        self.canvas = tkinter.Canvas(self.top, height = self.HEIGHT, width = self.WIDTH)
+        self.canvas = tkinter.Canvas(self.top, height = self.maze.size * 15 + 105, width = self.maze.size * 15 + 105)
         self.canvas.pack()
 
         self.__drawMaze(self.canvas, path)
