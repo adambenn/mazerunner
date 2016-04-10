@@ -2,6 +2,43 @@ import random
 from collections import deque
 from Generators.generator import *
 
+class Node:
+    def __init__(self, value, rank = 0, parent = None):
+        self.value = value
+        self.rank = rank
+        self.parent = parent if parent else self
+
+class DisjointSet:
+    def __init__(self):
+        self.sets = 0
+        self.value_map = {}
+
+    def createSet(self, value):
+        st = Node(value)
+        self.value_map[value] = st
+        self.sets += 1
+        return st
+
+    def mergeSets(self, x, y):
+        px = self.findSet(x)
+        py = self.findSet(y)
+        if px.rank > py.rank:
+            py.parent = px
+        else:
+            px.parent = py
+
+        if px.rank == py.rank:
+            py.rank = px.rank + 1
+        self.sets -= 1
+
+    def findSet(self, x):
+        while x.parent != x:
+            x = x.parent
+        return x
+
+    def nodeForValue(self, val):
+        return self.value_map[val]
+
 class KruskalsGenerator(Generator):
     def run(self, maze):
         start, end = self.getEntranceExitCoords(maze)
@@ -16,40 +53,41 @@ class KruskalsGenerator(Generator):
             g = self.graphics(maze)
             g.run([])
 
-        walls, sets = {}, []
+        walls = {}
+        disSet = DisjointSet()
 
         for y in range(len(maze.cells)):
             row = maze.cells[y]
             for x in range(len(row)):
                 cell = row[x]
-                sets.append({cell})
-                walls[cell] = []
+                n = disSet.createSet(cell) if not cell in disSet.value_map else disSet.value_map[cell]
+                walls[n] = []
                 for neighbour in maze.getNeighbours((x,y)):
-                    walls[cell].append(neighbour)
+                    if neighbour in disSet.value_map:
+                        walls[n].append(disSet.nodeForValue(neighbour))
+                    else:
+                        walls[n].append(disSet.createSet(neighbour))
 
-        while len(sets) != 1:
-            cell = random.choice(list(walls.keys()))
-            neighbour = random.choice(walls[cell])
+        while disSet.sets > 1:
+            cell_node = random.choice(list(walls.keys()))
+            neighbour_node = random.choice(walls[cell_node])
 
-            set1 = [s for s in sets if cell in s][0]
-            set2 = [s for s in sets if neighbour in s][0]
+            set1 = disSet.findSet(cell_node)
+            set2 = disSet.findSet(neighbour_node)
 
             if set1 != set2:
 
-                cell.removeWallsBetweenCell(neighbour)
+                cell_node.value.removeWallsBetweenCell(neighbour_node.value)
 
-                new_set = set1.union(set2)
-                sets.remove(set1)
-                sets.remove(set2)
-                sets.append(new_set)
+                disSet.mergeSets(cell_node, neighbour_node)
 
-            walls[cell].remove(neighbour)
-            walls[neighbour].remove(cell)
+                walls[cell_node].remove(neighbour_node)
+                walls[neighbour_node].remove(cell_node)
 
-            if walls[cell] == []:
-                del walls[cell]
-            if walls[neighbour] == []:
-                del walls[neighbour]
+            if walls[cell_node] == []:
+                del walls[cell_node]
+            if walls[neighbour_node] == []:
+                del walls[neighbour_node]
 
             if self.graphics:
                 g.updatePath([])
